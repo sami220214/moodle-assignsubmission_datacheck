@@ -1,8 +1,26 @@
 # Palautuksen tietosuojatarkistuksen testaus
 
-Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.0, vakaa julkaisu (stable, `2026111200`). Viimeisin dokumentoitu testiajo: 11.11.2026.
+Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.2, vakaa julkaisu (stable, `2026111204`). Viimeisin dokumentoitu testiajo: 11.11.2026.
 
-Version 1.0.0 julkaisutiedot vastaavat tiedoston `version.php` merkintöjä. Alla olevat testitulokset koskevat aiempia versioita; versiolle 1.0.0 ei ole tässä dokumentissa vahvistettua testiajoa.
+Version 1.0.2 julkaisutiedot vastaavat tiedoston `version.php` merkintöjä. Alla olevat testitulokset koskevat aiempia versioita; versiolle 1.0.2 ei ole tässä dokumentissa vahvistettua testiajoa.
+
+## Version 1.0.2 tarkistuskorjaukset (12.11.2026)
+
+Käyttäjän toimittamassa version 1.0.1 Moodle CI -ajotulosteessa PHP Lint, PHPMD, CodeSniffer ja Gruntin gherkinlint läpäisivät. PHPDoc Checker löysi puuttuvat parametrikuvaukset kolmesta Privacy API -metodista ja `submission_is_empty`-metodista. Validate löysi puuttuvan `@assignsubmission`-tagin Behat-tiedostosta. Savepoints- ja Mustache-tarkistukset ohitettiin, koska tarkistettavia tiedostoja ei ole.
+
+Versio 1.0.2 täydentää näiden neljän metodin parametrien ja paluuarvojen kuvaukset sekä lisää vaaditun Behat-tagin. Toiminnallista koodia tai tietokantarakennetta ei muutettu. Moodle CI:n PHPDoc Checker ja Validate tulee ajaa uudelleen korjatulle versiolle; niitä ei ole vahvistettu paikallisessa ympäristössä.
+
+Korjauksen jälkeen Moodle CodeSniffer (moodle-cs 3.9.0, PHP_CodeSniffer 4.0.4) läpäisi Moodle 4.5:n ja 5.3:n sääntöasetuksilla ilman virheitä tai varoituksia. PHP 8.3.36:n syntaksitarkistus hyväksyi kaikki yhdeksän PHP-tiedostoa.
+
+## Version 1.0.1 staattiset tarkistukset (12.11.2026)
+
+Moodle CodeSniffer (moodle-cs 3.9.0, PHP_CodeSniffer 4.0.4) tarkisti kaikki yhdeksän PHP-tiedostoa sekä Moodle 4.5:n että 5.3:n sääntöasetuksilla: ei virheitä eikä varoituksia. PHP 8.3.36:n syntaksitarkistus (`php -l`) hyväksyi kaikki yhdeksän tiedostoa.
+
+PHPMD 2.15.0 tarkisti lisäosan Moodle Plugin CI:n virallisella `res/config/phpmd.xml`-säännöstöllä: ei rikkomuksia, paluuarvo 0.
+
+Korjaukset koskevat Moodle-lisenssiotsakkeita, PHPDoc-kommentteja, testien kattavuusmerkintöjä, kielitekstien järjestystä ja koodin muotoilua. PHPMD-poikkeukset rajataan Moodlen vaatimiin käyttämättömiin parametreihin, rajapinnan määräämään `get_form_elements`-nimeen ja testiluokan metodimäärään. CodeSnifferin PHPDoc-tagitarkistuksesta poiketaan vain näiden PHPMD-merkintöjen kohdalla. Pelkän luokan määrittelevistä tuotantotiedostoista poistettiin tarpeettomat `MOODLE_INTERNAL`-tarkistukset.
+
+Staattiset tarkistukset eivät korvaa PHPUnit- tai Behat-ajoja. Niitä ei ajettu uudelleen näiden korjausten yhteydessä.
 
 ## Version 0.1.5-beta testauksen tila
 

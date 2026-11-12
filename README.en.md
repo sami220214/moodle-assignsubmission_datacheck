@@ -2,7 +2,7 @@
 
 [Suomeksi](README.md)
 
-A plugin for Moodle 4.5+: `assignsubmission_datacheck`, stable version 1.0.0.
+A plugin for Moodle 4.5+: `assignsubmission_datacheck`, stable version 1.0.2.
 PHPUnit tests have been run on Moodle 4.5.15+ and 5.3+. Browser test results and testing limitations are documented in [QA.md](QA.md) (in Finnish).
 
 ## How it works

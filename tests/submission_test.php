@@ -1,10 +1,27 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Regression tests for assignment data declarations.
  *
  * @package assignsubmission_datacheck
+ * @copyright 2026 HAMK
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace assignsubmission_datacheck;
 
 defined('MOODLE_INTERNAL') || die();
@@ -12,15 +29,20 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
+// phpcs:disable moodle.Commenting.ValidTags.Invalid -- Required PHPMD annotation.
 /**
  * Tests saving, display eligibility and submission readiness with a shared assignment fixture.
  *
  * Keep these related regression tests together; each public test method covers a separate behaviour.
  *
+ * @covers \assign_submission_datacheck
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 final class submission_test extends \advanced_testcase {
-    /** Create an assignment and an empty student submission. */
+    // phpcs:enable moodle.Commenting.ValidTags.Invalid
+    /**
+     * Create an assignment and an empty student submission.
+     */
     private function create_submission(): array {
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -41,7 +63,9 @@ final class submission_test extends \advanced_testcase {
         return [$assignment, $assignment->get_submission_plugin_by_type('datacheck'), $submission, $student, $course];
     }
 
-    /** Save all allowed answers without creating duplicate declaration rows. */
+    /**
+     * Save all allowed answers without creating duplicate declaration rows.
+     */
     public function test_save_and_update(): void {
         global $DB;
         [$assignment, $plugin, $submission] = $this->create_submission();
@@ -55,7 +79,9 @@ final class submission_test extends \advanced_testcase {
         }
     }
 
-    /** Invalid input is rejected and readiness failures contain readable text. */
+    /**
+     * Invalid input is rejected and readiness failures contain readable text.
+     */
     public function test_missing_and_invalid_answers(): void {
         global $DB;
         [, $plugin, $submission] = $this->create_submission();
@@ -69,7 +95,9 @@ final class submission_test extends \advanced_testcase {
         $this->assertFalse($DB->record_exists('assignsubmission_datacheck', ['submission' => $submission->id]));
     }
 
-    /** Match Moodle's summary visibility condition without accepting metadata as work. */
+    /**
+     * Match Moodle's summary visibility condition without accepting metadata as work.
+     */
     public function test_visibility_requires_real_submission_content(): void {
         [$assignment, $plugin, $submission] = $this->create_submission();
         $this->assertTrue($plugin->allow_submissions()); // The question must be added to the edit form.
@@ -94,8 +122,11 @@ final class submission_test extends \advanced_testcase {
         $summary = $plugin->view_summary($submission, $showviewlink);
         $this->assertStringContainsString(s($plugin->get_name()), $summary);
         $this->assertStringContainsString(s(get_string('question', 'assignsubmission_datacheck')), $summary);
-        $this->assertStringContainsString(s(get_string('response', 'assignsubmission_datacheck',
-            get_string('answer_yes', 'assignsubmission_datacheck'))), $summary);
+        $this->assertStringContainsString(s(get_string(
+            'response',
+            'assignsubmission_datacheck',
+            get_string('answer_yes', 'assignsubmission_datacheck')
+        )), $summary);
         $guidance = get_string('teacher_guidance', 'assignsubmission_datacheck');
         $this->assertStringContainsString(strip_tags($guidance), strip_tags($summary));
         $this->assertMatchesRegularExpression('/<b>[^<]+<\/b>/', $summary);
@@ -108,44 +139,59 @@ final class submission_test extends \advanced_testcase {
         $this->assertTrue($assignment->submission_empty($submission));
     }
 
-    /** The form displays the question and recalls an existing answer. */
+    /**
+     * The form displays the question and recalls an existing answer.
+     */
     public function test_form_question_and_saved_selection(): void {
         [, $plugin, $submission] = $this->create_submission();
         $form = new \MoodleQuickForm('datachecktest', 'post', '');
         $data = new \stdClass();
         $this->assertTrue($plugin->get_form_elements_for_user(null, $form, $data, 0));
         $this->assertTrue($form->elementExists('datacheck_answer'));
-        $this->assertEquals(get_string('question', 'assignsubmission_datacheck'),
-            $form->getElement('datacheck_answer')->getLabel());
+        $this->assertEquals(
+            get_string('question', 'assignsubmission_datacheck'),
+            $form->getElement('datacheck_answer')->getLabel()
+        );
         $plugin->save($submission, (object)['datacheck_answer' => 'unsure']);
         $form = new \MoodleQuickForm('datacheckedit', 'post', '');
         $plugin->get_form_elements_for_user($submission, $form, $data, 0);
         $this->assertSame('unsure', $data->datacheck_answer);
     }
 
-    /** Rejecting an edit must preserve the previously saved declaration. */
+    /**
+     * Rejecting an edit must preserve the previously saved declaration.
+     */
     public function test_invalid_edit_preserves_answer(): void {
         global $DB;
         [, $plugin, $submission] = $this->create_submission();
         $plugin->save($submission, (object)['datacheck_answer' => 'no']);
         foreach (['', 'YES', '<script>', ['yes'], null] as $answer) {
             $this->assertFalse($plugin->save($submission, (object)['datacheck_answer' => $answer]));
-            $this->assertSame('no', $DB->get_field('assignsubmission_datacheck', 'answer',
-                ['submission' => $submission->id]));
+            $this->assertSame('no', $DB->get_field(
+                'assignsubmission_datacheck',
+                'answer',
+                ['submission' => $submission->id]
+            ));
         }
     }
 
-    /** Readiness checks also reject invalid data already in the database. */
+    /**
+     * Readiness checks also reject invalid data already in the database.
+     */
     public function test_precheck_rejects_corrupt_answer(): void {
         global $DB;
         [, $plugin, $submission] = $this->create_submission();
         $plugin->save($submission, (object)['datacheck_answer' => 'yes']);
         $DB->set_field('assignsubmission_datacheck', 'answer', 'invalid', ['submission' => $submission->id]);
-        $this->assertSame(get_string('required', 'assignsubmission_datacheck'),
-            $plugin->precheck_submission($submission));
+        $this->assertSame(
+            get_string('required', 'assignsubmission_datacheck'),
+            $plugin->precheck_submission($submission)
+        );
     }
 
-    /** Students get context for their answer, but not the teacher instructions. */
+    /**
+     * Students get context for their answer, but not the teacher instructions.
+     */
     public function test_student_summary_excludes_teacher_guidance(): void {
         [, $plugin, $submission, $student] = $this->create_submission();
         $plugin->save($submission, (object)['datacheck_answer' => 'unsure']);
@@ -154,10 +200,14 @@ final class submission_test extends \advanced_testcase {
         $this->assertStringContainsString(s(get_string('question', 'assignsubmission_datacheck')), $summary);
         $this->assertStringContainsString(s(get_string('answer_unsure', 'assignsubmission_datacheck')), $summary);
         $this->assertStringNotContainsString(
-            strip_tags(get_string('teacher_guidance', 'assignsubmission_datacheck')), strip_tags($summary));
+            strip_tags(get_string('teacher_guidance', 'assignsubmission_datacheck')),
+            strip_tags($summary)
+        );
     }
 
-    /** Online text is substantive content just like a file submission. */
+    /**
+     * Online text is substantive content just like a file submission.
+     */
     public function test_visibility_with_online_text(): void {
         [$assignment, $plugin, $submission] = $this->create_submission();
         $textplugin = $assignment->get_submission_plugin_by_type('onlinetext');
@@ -171,7 +221,9 @@ final class submission_test extends \advanced_testcase {
         $this->assertTrue($plugin->is_empty($submission));
     }
 
-    /** Copying a declaration and then removing it does not affect the source. */
+    /**
+     * Copying a declaration and then removing it does not affect the source.
+     */
     public function test_copy_and_remove_submission(): void {
         global $DB;
         [$assignment, $plugin, $source] = $this->create_submission();
@@ -179,14 +231,19 @@ final class submission_test extends \advanced_testcase {
         $destination = $assignment->get_user_submission($other->id, true);
         $plugin->save($source, (object)['datacheck_answer' => 'unsure']);
         $this->assertTrue($plugin->copy_submission($source, $destination));
-        $this->assertSame('unsure', $DB->get_field('assignsubmission_datacheck', 'answer',
-            ['submission' => $destination->id]));
+        $this->assertSame('unsure', $DB->get_field(
+            'assignsubmission_datacheck',
+            'answer',
+            ['submission' => $destination->id]
+        ));
         $this->assertTrue($plugin->remove($destination));
         $this->assertFalse($DB->record_exists('assignsubmission_datacheck', ['submission' => $destination->id]));
         $this->assertTrue($DB->record_exists('assignsubmission_datacheck', ['submission' => $source->id]));
     }
 
-    /** Deleting an assignment removes only its own declaration rows. */
+    /**
+     * Deleting an assignment removes only its own declaration rows.
+     */
     public function test_delete_instance_is_scoped(): void {
         global $DB;
         [, $plugin, $submission] = $this->create_submission();
@@ -198,7 +255,9 @@ final class submission_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('assignsubmission_datacheck', ['submission' => $other->id]));
     }
 
-    /** Moodle's assignment settings help icon requires both language strings. */
+    /**
+     * Moodle's assignment settings help icon requires both language strings.
+     */
     public function test_settings_help_strings_exist(): void {
         $this->resetAfterTest();
         foreach (['enabled', 'enabled_help', 'response', 'teacher_guidance'] as $key) {
@@ -206,7 +265,9 @@ final class submission_test extends \advanced_testcase {
         }
     }
 
-    /** Group members share one declaration, matching Moodle's shared submission. */
+    /**
+     * Group members share one declaration, matching Moodle's shared submission.
+     */
     public function test_group_submission_uses_one_shared_declaration(): void {
         global $DB;
         [$assignment, $plugin, , $student, $course] = $this->create_submission();

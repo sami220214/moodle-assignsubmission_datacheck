@@ -1,10 +1,27 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Privacy export and deletion regression tests.
  *
  * @package assignsubmission_datacheck
+ * @copyright 2026 HAMK
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace assignsubmission_datacheck\privacy;
 
 defined('MOODLE_INTERNAL') || die();
@@ -15,9 +32,15 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 use mod_assign\privacy\assign_plugin_request_data;
 use core_privacy\local\request\writer;
 
-/** Verify that declarations are exported and removed within the requested scope. */
+/**
+ * Verify that declarations are exported and removed within the requested scope.
+ *
+ * @covers \assignsubmission_datacheck\privacy\provider
+ */
 final class provider_test extends \core_privacy\tests\provider_testcase {
-    /** Create two students with declarations in each of two assignments. */
+    /**
+     * Create two students with declarations in each of two assignments.
+     */
     private function create_declarations(): array {
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -39,15 +62,19 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
             $assignments[] = $assignment;
             foreach ($students as $j => $student) {
                 $submission = $assignment->get_user_submission($student->id, true);
-                $assignment->get_submission_plugin_by_type('datacheck')->save($submission,
-                    (object)['datacheck_answer' => $j ? 'no' : 'unsure']);
+                $assignment->get_submission_plugin_by_type('datacheck')->save(
+                    $submission,
+                    (object)['datacheck_answer' => $j ? 'no' : 'unsure']
+                );
                 $submissions[$i][$j] = $submission;
             }
         }
         return [$assignments, $submissions, $students];
     }
 
-    /** Metadata describes the stored answer table. */
+    /**
+     * Metadata describes the stored answer table.
+     */
     public function test_metadata(): void {
         $collection = new \core_privacy\local\metadata\collection('assignsubmission_datacheck');
         $items = provider::get_metadata($collection)->get_collection();
@@ -55,7 +82,9 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         $this->assertSame('assignsubmission_datacheck', reset($items)->get_name());
     }
 
-    /** A student's export contains their declaration, but not another student's. */
+    /**
+     * A student's export contains their declaration, but not another student's.
+     */
     public function test_export_submission(): void {
         [$assignments, $submissions] = $this->create_declarations();
         $assignment = $assignments[0];
@@ -68,29 +97,45 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         $this->assertNotEmpty($data->timemodified);
     }
 
-    /** Exporting grader data does not disclose the student's declaration. */
+    /**
+     * Exporting grader data does not disclose the student's declaration.
+     */
     public function test_grader_export_excludes_declaration(): void {
         [$assignments, $submissions] = $this->create_declarations();
         $assignment = $assignments[0];
-        $request = new assign_plugin_request_data($assignment->get_context(), $assignment,
-            $submissions[0][0], [], get_admin());
+        $request = new assign_plugin_request_data(
+            $assignment->get_context(),
+            $assignment,
+            $submissions[0][0],
+            [],
+            get_admin()
+        );
         provider::export_submission_user_data($request);
         $this->assertFalse(writer::with_context($assignment->get_context())->has_any_data());
     }
 
-    /** A user's deletion preserves other users and other assignments. */
+    /**
+     * A user's deletion preserves other users and other assignments.
+     */
     public function test_delete_user_submission(): void {
         global $DB;
         [$assignments, $submissions, $students] = $this->create_declarations();
         $assignment = $assignments[0];
-        provider::delete_submission_for_userid(new assign_plugin_request_data($assignment->get_context(),
-            $assignment, $submissions[0][0], [], $students[0]));
+        provider::delete_submission_for_userid(new assign_plugin_request_data(
+            $assignment->get_context(),
+            $assignment,
+            $submissions[0][0],
+            [],
+            $students[0]
+        ));
         $this->assertFalse($DB->record_exists('assignsubmission_datacheck', ['submission' => $submissions[0][0]->id]));
         $this->assertTrue($DB->record_exists('assignsubmission_datacheck', ['submission' => $submissions[0][1]->id]));
         $this->assertSame(3, $DB->count_records('assignsubmission_datacheck'));
     }
 
-    /** Context deletion must leave declarations in other assignments intact. */
+    /**
+     * Context deletion must leave declarations in other assignments intact.
+     */
     public function test_delete_context(): void {
         global $DB;
         [$assignments] = $this->create_declarations();
@@ -100,7 +145,9 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         $this->assertSame(2, $DB->count_records('assignsubmission_datacheck'));
     }
 
-    /** Bulk deletion selects only the requested users within the requested assignment. */
+    /**
+     * Bulk deletion selects only the requested users within the requested assignment.
+     */
     public function test_bulk_delete(): void {
         global $DB;
         [$assignments, $submissions, $students] = $this->create_declarations();
@@ -115,7 +162,9 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         $this->assertSame(3, $DB->count_records('assignsubmission_datacheck'));
     }
 
-    /** Empty bulk requests cannot delete any records. */
+    /**
+     * Empty bulk requests cannot delete any records.
+     */
     public function test_empty_bulk_delete(): void {
         global $DB;
         [$assignments] = $this->create_declarations();

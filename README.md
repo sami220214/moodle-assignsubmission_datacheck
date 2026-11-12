@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-Moodle 4.5+:lle tarkoitettu lisäosa: `assignsubmission_datacheck`, vakaa versio 1.0.0 (stable).
+Moodle 4.5+:lle tarkoitettu lisäosa: `assignsubmission_datacheck`, vakaa versio 1.0.2 (stable).
 PHPUnit-testit on ajettu Moodle 4.5.15+:ssa ja 5.3+:ssa. Selainajojen tulokset ja testauksen rajaukset ovat tiedostossa [QA.md](QA.md).
 
 ## Toiminta

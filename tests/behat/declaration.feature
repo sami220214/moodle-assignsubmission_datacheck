@@ -1,4 +1,4 @@
-@assignsubmission_datacheck @mod @mod_assign @javascript
+@assignsubmission @assignsubmission_datacheck @mod @mod_assign @javascript
 Feature: Students declare submission data and teachers understand the answer
   In order to handle assignment material appropriately
   As a student and teacher
