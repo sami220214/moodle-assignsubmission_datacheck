@@ -23,14 +23,29 @@ class provider implements
         return $collection;
     }
 
+    /**
+     * Context discovery is handled by mod_assign; parameters are required by its privacy interface.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public static function get_context_for_userid_within_submission(int $userid, contextlist $contextlist) {
         // mod_assign already identifies contexts through assign_submission.
     }
 
+    /**
+     * Student discovery is handled by mod_assign; the parameter is required by its privacy interface.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public static function get_student_user_ids(\mod_assign\privacy\useridlist $useridlist) {
         // User IDs are already represented by assign_submission.
     }
 
+    /**
+     * No independent user IDs need adding; the parameter is required by the privacy interface.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public static function get_userids_from_context(\core_privacy\local\request\userlist $userlist) {
         // No independent user identifiers are stored in this plugin's table.
     }

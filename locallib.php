@@ -97,6 +97,11 @@ class assign_submission_datacheck extends assign_submission_plugin {
         return true;
     }
 
+    /**
+     * A declaration alone never counts as content, regardless of the form data required by the parent API.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function submission_is_empty(stdClass $data) {
         return true;
     }

@@ -12,7 +12,13 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
-/** Tests saving, display eligibility and submission readiness. */
+/**
+ * Tests saving, display eligibility and submission readiness with a shared assignment fixture.
+ *
+ * Keep these related regression tests together; each public test method covers a separate behaviour.
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 final class submission_test extends \advanced_testcase {
     /** Create an assignment and an empty student submission. */
     private function create_submission(): array {
