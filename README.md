@@ -2,8 +2,26 @@
 
 [English](README.en.md)
 
-Moodle 4.5+:lle tarkoitettu lisäosa: `assignsubmission_datacheck`, vakaa versio 1.0.2 (stable).
-PHPUnit-testit on ajettu Moodle 4.5.15+:ssa ja 5.3+:ssa. Selainajojen tulokset ja testauksen rajaukset ovat tiedostossa [QA.md](QA.md).
+HAMK Palautuksen tietosuojatarkistus auttaa opiskelijoita tunnistamaan Moodle-tehtäviensä palautuksissa olevat henkilötiedot, arkaluonteiset tiedot ja luottamukselliset tiedot. Lisäosa lisää palautuslomakkeelle pakollisen kysymyksen ja näyttää tallennetun vastauksen opiskelijalle ja arvioijalle. Vastaus auttaa opettajaa arvioimaan, milloin aineistosta on syytä keskustella opiskelijan kanssa ennen sen jatkokäsittelyä tai jakamista.
+
+Lisäosan komponentti: `assignsubmission_datacheck`. Nykyinen julkaisu: vakaa versio 1.0.2 (stable). Lisenssi: [GNU GPL v3 tai uudempi](LICENSE).
+
+## Ominaisuudet
+
+- Kysyy, sisältääkö palautus henkilötietoja, arkaluonteisia tietoja tai luottamuksellisia tietoja. Vastausvaihtoehdot ovat **Kyllä**, **Ei** ja **En osaa sanoa**.
+- Edellyttää vastausta tallennettaessa tehtävän palautuslomakkeella ja palauttaa tallennetun valinnan näkyviin palautusta muokattaessa.
+- Näyttää vastauksen palautuksen yhteenvedossa ja antaa arvioijalle ohjeita vastauksen tulkintaan sekä tietosuojan huomioimiseen ennen tekoälyn käyttöä palautteen valmistelussa.
+- Opettaja voi ottaa tarkistuksen käyttöön tai poistaa sen käytöstä tehtäväkohtaisesti. Ylläpitäjä voi määrittää oletusasetuksen uusille tehtäville.
+- Toimii **Tiedostopalautukset**- tai **Verkkoteksti**-palautustavan rinnalla.
+- Sisältää suomen- ja englanninkieliset kielitekstit sekä Moodlen tietosuojarajapinnan (Privacy API) menetelmät tallennettujen vastaustietojen vientiin ja poistamiseen.
+
+## Vaatimukset ja Moodle-versiot
+
+- Edellyttää Moodle 4.5:tä tai uudempaa sekä Tehtävä-aktiviteettia. Käytä Moodle-asennuksesi edellyttämiä PHP- ja tietokantaversioita.
+- Lisäosa on tarkoitettu Moodle-versioille 4.5–5.3. PHPUnit-testit on ajettu Moodle 4.5.15+:ssa ja 5.3+:ssa. Versioille 5.0, 5.1 ja 5.2 on tehty lähdekoodin ja rajapintojen tarkistus, mutta ei ajotestejä.
+- Ota jokaisessa tehtävässä tämän lisäosan lisäksi käyttöön **Tiedostopalautukset** tai **Verkkoteksti**: pelkkä tietosuojavastaus ei kelpaa tehtäväsisällöksi.
+
+Selaimessa tehtävä hyväksymistestaus on kesken. Tarkista ennen käyttöönottoa testitulokset ja avoimet tarkistukset tiedostosta [QA.md](QA.md) sekä jäljempänä olevat **Keskeiset rajoitukset**. Vastaustietojen varmuuskopiointi- ja palautustukea kurssin mukana ei ole toteutettu. Mobiilisovelluksen ja verkkopalvelurajapintojen palautustavat vaativat vielä integraatiotestit.
 
 ## Toiminta
 

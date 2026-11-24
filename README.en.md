@@ -2,8 +2,26 @@
 
 [Suomeksi](README.md)
 
-A plugin for Moodle 4.5+: `assignsubmission_datacheck`, stable version 1.0.2.
-PHPUnit tests have been run on Moodle 4.5.15+ and 5.3+. Browser test results and testing limitations are documented in [QA.md](QA.md) (in Finnish).
+HAMK Submission privacy check helps students identify personal data, sensitive information, or confidential information in their Moodle assignment submissions. It adds a required declaration to the submission form and shows the saved answer to students and graders, helping teachers decide when to discuss the material with a student before processing or sharing it further.
+
+Plugin component: `assignsubmission_datacheck`. Current release: stable version 1.0.2. Licensed under the [GNU GPL v3 or later](LICENSE).
+
+## Features
+
+- Asks students whether their submission contains personal data, sensitive information, or confidential information, with **Yes**, **No**, and **Not sure** options.
+- Requires an answer when saving through the assignment submission form and restores the saved selection when editing.
+- Displays the declaration in the submission summary and provides graders with guidance on interpreting the answer, including considerations before using AI to assist with feedback.
+- Lets teachers enable or disable the check for each assignment; administrators can set the default for new assignments.
+- Works alongside **File submissions** or **Online text** for the actual assignment content.
+- Includes English and Finnish language strings and Privacy API methods for exporting and deleting stored declaration data.
+
+## Requirements and Moodle versions
+
+- Requires Moodle 4.5 or later, with the Assignment activity available. Use the PHP and database versions required by your Moodle installation.
+- The intended Moodle version range is 4.5 through 5.3. PHPUnit tests have been run on Moodle 4.5.15+ and 5.3+. Moodle 5.0, 5.1, and 5.2 have undergone source code and API reviews, but have not been runtime tested.
+- Enable **File submissions** or **Online text** in each assignment as well as this plugin: a declaration alone does not count as submission content.
+
+Browser acceptance testing is incomplete. See [QA.md](QA.md) (in Finnish) for test results and outstanding checks, and **Key limitations** below before deployment. Course backup and restore support for declaration data is not implemented. Mobile app and web service submission workflows still require integration testing.
 
 ## How it works
 

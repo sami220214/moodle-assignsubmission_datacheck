@@ -1,8 +1,19 @@
 # Palautuksen tietosuojatarkistuksen testaus
 
-Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.2, vakaa julkaisu (stable, `2026111204`). Viimeisin dokumentoitu testiajo: 11.11.2026.
+Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.2, vakaa julkaisu (stable, `2026111204`). Viimeisin dokumentoitu testiajo: 23.11.2026.
 
-Version 1.0.2 julkaisutiedot vastaavat tiedoston `version.php` merkintöjä. Alla olevat testitulokset koskevat aiempia versioita; versiolle 1.0.2 ei ole tässä dokumentissa vahvistettua testiajoa.
+## Version 1.0.2 testiajo (23.11.2026)
+
+Testattiin paikallisen työtilan versiota erillisessä Docker-testiympäristössä: Moodle 5.3+ (Build: 20261030), PHP 8.3.31, MariaDB 11.4.13 ja PHPUnit 11.5.56. Lisäosan PHP-, XML- ja feature-tiedostojen SHA-256-tiivisteet verrattiin testiympäristöön. Kaksi poikkeavaa kielitiedostoa kopioitiin työtilasta testiympäristöön ennen ajoja. GitHubin main-haaran vastaavuutta ei varmennettu.
+
+- PHP-syntaksitarkistus: kaikki yhdeksän PHP-tiedostoa hyväksyttiin paikallisella PHP 8.3:lla.
+- PHPUnit: kaikki 19 testiä ja 91 tarkistusta läpäisivät. Kaksi vanhentumisilmoitusta koskee testiluokkien kommenttimuotoisia metatietoja, joiden tuki poistuu PHPUnit 12:ssa.
+- Behat / Selenium Firefox: 7 skenaariosta 6 läpäisi ja 1 epäonnistui; 82 askeleesta 70 läpäisi ja 12 ohitettiin. BeforeStep-koukku pysähtyi taustan ensimmäisessä askeleessa JavaScriptin/AJAXin valmiuden odotukseen (`theme_boost/loader`, 10 sekuntia).
+- Koko Behat-sarjan uusinta asetuksella `MOODLE_DOCKER_TIMEOUT_FACTOR=3`: 6 skenaariota läpäisi ja 1 epäonnistui; 68 askelta läpäisi ja 14 ohitettiin. Sama koukku pysähtyi 30 sekunnin aikarajaan. Selainajon tulos ei ole hyväksytty; aikakatkaisun syytä ei selvitetty tässä ajossa.
+
+Ajolokit: [PHPUnit](artifacts/phpunit-moodle53-20261123.txt), [Behat](artifacts/behat-moodle53-20261123.txt), [Behat-uusinta](artifacts/behat-moodle53-20261123-retry.txt).
+
+Moodle 4.5:n testejä ja Moodle Plugin CI:n staattisia tarkistuksia ei ajettu tällä kertaa.
 
 ## Version 1.0.2 tarkistuskorjaukset (12.11.2026)
 
