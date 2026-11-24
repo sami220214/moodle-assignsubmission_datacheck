@@ -4,7 +4,7 @@
 
 HAMK Palautuksen tietosuojatarkistus auttaa opiskelijoita tunnistamaan Moodle-tehtäviensä palautuksissa olevat henkilötiedot, arkaluonteiset tiedot ja luottamukselliset tiedot. Lisäosa lisää palautuslomakkeelle pakollisen kysymyksen ja näyttää tallennetun vastauksen opiskelijalle ja arvioijalle. Vastaus auttaa opettajaa arvioimaan, milloin aineistosta on syytä keskustella opiskelijan kanssa ennen sen jatkokäsittelyä tai jakamista.
 
-Lisäosan komponentti: `assignsubmission_datacheck`. Nykyinen julkaisu: vakaa versio 1.0.2 (stable). Lisenssi: [GNU GPL v3 tai uudempi](LICENSE).
+Lisäosan komponentti: `assignsubmission_datacheck`. Nykyinen julkaisu: vakaa versio 1.0.3 (stable). Lisenssi: [GNU GPL v3 tai uudempi](LICENSE).
 
 ## Ominaisuudet
 

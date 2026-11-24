@@ -1,6 +1,12 @@
 # Palautuksen tietosuojatarkistuksen testaus
 
-Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.2, vakaa julkaisu (stable, `2026111204`). Viimeisin dokumentoitu testiajo: 23.11.2026.
+Nykyinen lisäosa: `assignsubmission_datacheck` 1.0.3, vakaa julkaisu (stable, `2026112400`). Viimeisin dokumentoitu testiajo: 23.11.2026 (versio 1.0.2).
+
+## Versio 1.0.3 (24.11.2026)
+
+Julkaisu lisää lisäosan juureen LICENSE-tiedoston, laajentaa suomen- ja englanninkielisiä README-ohjeita sekä lisää GitHub Actionsin Moodle Plugin CI -työnkulun. Toiminnallista koodia tai tietokantarakennetta ei muutettu. Julkaisun versionumero on korotettu arvoon `2026112400`.
+
+Asennuspaketin kansiorakenne ja tiedostojen vastaavuus työtilaan tarkistetaan paketoinnin yhteydessä. PHPUnit- ja Behat-testejä tai varsinaista GitHub Actions -ajoa ei ole ajettu tälle versiolle. Alla olevat ajotulokset koskevat aiempia versioita.
 
 ## Version 1.0.2 testiajo (23.11.2026)
 

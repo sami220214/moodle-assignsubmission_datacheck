@@ -4,7 +4,7 @@
 
 HAMK Submission privacy check helps students identify personal data, sensitive information, or confidential information in their Moodle assignment submissions. It adds a required declaration to the submission form and shows the saved answer to students and graders, helping teachers decide when to discuss the material with a student before processing or sharing it further.
 
-Plugin component: `assignsubmission_datacheck`. Current release: stable version 1.0.2. Licensed under the [GNU GPL v3 or later](LICENSE).
+Plugin component: `assignsubmission_datacheck`. Current release: stable version 1.0.3. Licensed under the [GNU GPL v3 or later](LICENSE).
 
 ## Features
 
