@@ -77,6 +77,12 @@ Moodlen `assign_submission`-tietue yksilöi käyttäjän tai ryhmän sekä palau
 7. Ota käyttöön erillinen lopullisen palautuksen lähetyspainike ja varmista, että kelvollinen vastaus sallii palautuksen lähettämisen. Ota tietosuojatarkistus käyttöön tehtävässä, jossa on jo tiedostopalautus mutta ei tietosuojavastausta. Lopullisen palautuksen tulee estyä ja näyttää kysymyksen virheilmoitus, kunnes opiskelija muokkaa palautusta ja vastaa kysymykseen.
 8. Testaa erikseen uusi palautusyritys, opettajan arviointinäkymä, ryhmäpalautukset ja tietosuojarajapinta. Varmuuskopiointi- ja palautustukea ei ole, joten vastausten säilymiseen varmuuskopiosta palautettaessa ei saa luottaa.
 
+## GitHub Actions CI
+
+Työnkulku [`.github/workflows/ci.yml`](.github/workflows/ci.yml) suorittaa Moodle Plugin CI -tarkistukset push- ja pull request -tapahtumissa. Sen voi käynnistää myös käsin GitHubin **Actions**-välilehdeltä. Testimatriisissa ovat Moodle 4.5 ja Moodlen `main`-kehityshaara PHP 8.3:lla sekä PostgreSQL- ja MariaDB-tietokannoilla. Lisäksi Moodle 4.5 testataan PHP 8.1:llä ja MariaDB:llä. Kehityshaaran testaus ei vahvista tulevan Moodle-julkaisun tukea.
+
+Tarkistuksiin kuuluvat PHP-syntaksi, PHP Mess Detector, Moodlen koodityyli ja PHPDoc, lisäosan validointi, päivitysten tallennuspisteet, Mustache- ja Grunt-tarkistukset, PHPUnit sekä Behat Chrome-selaimella. Epäonnistuneiden Behat-ajojen diagnostiikkatiedostot säilytetään seitsemän päivää. Varsinaiset tulokset näkyvät GitHub Actionsissa työnkulun GitHubiin lähettämisen jälkeen; asetustiedoston lisääminen ei tarkoita tarkistusten läpäisyä.
+
 ## Moodlen PHPUnit-regressiotestit
 
 Kun Moodlen PHPUnit-testiympäristö ja testitietokanta on määritetty, suorita Moodle 4.5:n juurihakemistossa:

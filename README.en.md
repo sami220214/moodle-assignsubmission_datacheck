@@ -77,6 +77,12 @@ Moodle's `assign_submission` record identifies the user or group and the submiss
 7. Enable the separate final submission button and verify that a valid answer allows the submission to be submitted. Enable the privacy check in an assignment that already has a file submission but no privacy answer. Final submission should be blocked with the question's error message until the student edits the submission and answers the question.
 8. Separately test a new submission attempt, the teacher's grading view, group submissions, and the Privacy API. Backup and restore support is not available, so answers cannot be relied upon to survive restoring from a backup.
 
+## GitHub Actions CI
+
+The workflow in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs Moodle Plugin CI on pushes and pull requests, and can also be started manually from GitHub's **Actions** tab. It checks Moodle 4.5 and Moodle's `main` development branch with PHP 8.3 on PostgreSQL and MariaDB, plus Moodle 4.5 with PHP 8.1 on MariaDB. Testing `main` does not establish support for a future Moodle release.
+
+Checks include PHP syntax, PHP Mess Detector, Moodle coding standards and PHPDoc, plugin validation, upgrade savepoints, Mustache and Grunt checks, PHPUnit, and Behat using Chrome. Failed Behat runs upload diagnostic artifacts for seven days. Actual results appear in GitHub Actions after the workflow is pushed; adding the configuration does not mean the checks have passed.
+
 ## Moodle PHPUnit regression tests
 
 Once the Moodle PHPUnit test environment and test database have been configured, run the following from the Moodle 4.5 root directory:
